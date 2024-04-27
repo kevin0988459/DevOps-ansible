@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+    <actions/>
+    <description></description>
+    <keepDependencies>false</keepDependencies>
+    <properties/>
+    <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.92">
+        <script>
+        <![CDATA[
+pipeline {
+    agent any
+    stages {
+        stage('git clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/kevin0988459/spring-petclinic.git'
+            }  
+            post {
+                failure { echo "[*] git clone failure" }
+                success { echo '[*] git clone successful' }
+            }
+        }
+        stage('Build') {
+            steps {
+                sh './mvnw package'
+                // Set the JAR_PATH environment variable assuming the jar is named spring-petclinic.jar
+                script {
+                    env.JAR_PATH = sh(script: "ls ${WORKSPACE}/target/*.jar", returnStdout: true).trim()
+                }
+            }
+        }
+        stage('scan') {
+            steps {
+                withSonarQubeEnv(installationName: 'sonar'){
+                    sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    // Ensure JAR_PATH is echoed correctly
+                    echo "Deploying jar at: ${env.JAR_PATH}"
+                    // Use the resolved JAR_PATH directly in the command line
+                    sh "ansible-playbook -i /var/jenkins_home/ansible/hosts /var/jenkins_home/ansible/deploy_app.yml -e 'jar_path=${env.JAR_PATH}' "
+                }
+            }
+        } 
+    }
+}
+        ]]>
+        </script>
+        <sandbox>true</sandbox>
+    </definition>
+    <triggers/>
+    <disabled>false</disabled>
+</flow-definition>

@@ -1,0 +1,16 @@
+---
+- name: Deploy Spring Petclinic Application
+  hosts: production
+  become: yes
+  vars:
+    jar_path: "{{ jar_path }}" 
+
+  tasks:
+    - name: Copy jar file to the production server
+      copy:
+        src: "{{ jar_path }}"
+        dest: "/opt/spring-petclinic.jar"
+        mode: '0755'
+
+    - name: Run the application
+      ansible.builtin.shell: nohup java -jar /opt/spring-petclinic.jar > output.log 2>&1 &

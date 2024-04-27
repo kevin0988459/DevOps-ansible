@@ -1,0 +1,28 @@
+Pros and Cons with respect to deployment:
+
+Ansible:
+Pros: Easy to learn thanks to its use of Python and YAML. No agents required, it leverages SSH for configuration.
+      Simple to set up and ideal for small to large deployments. Large and active community for support.
+Cons: Limited error handling compared to Chef and Puppet.
+
+Chef:
+Pros: Offers flexibility and infrastructure as code capabilities.
+      Chef cookbooks define the desired state of a system, allowing for modular and reusable configurations. Large and active community.
+Cons: Requires knowledge of Ruby for deeper configuration. Setting up Chef can be more complex compared to Ansible.
+
+Puppet:
+Pros: Mature tool known for security and excellent at handling large deployments. Similar to Chef, Puppet uses modules for reusability. Large and active community.
+Cons: Requires knowledge of the Puppet DSL, which can have a steeper learning curve. Setting up Puppet can be complex.
+
+Equivalents to Ansible Playbooks
+Ansible playbooks outline the desired configuration state for a system or group of systems. Here's how Chef and Puppet achieve similar outcomes:
+
+Chef: Chef cookbooks define the desired state using a collection of recipes. Each recipe focuses on a specific configuration aspect. Multiple cookbooks can be combined to create complex deployments.
+
+Puppet: Puppet manifests are written in the Puppet DSL and specify the desired state for resources on a system. Similar to playbooks, manifests can be organized into modules for reusability.
+
+
+
+####Reference####
+https://www.knowledgehut.com/blog/devops/chef-vs-ansible-vs-puppet
+https://betterstack.com/community/comparisons/chef-vs-puppet-vs-ansible

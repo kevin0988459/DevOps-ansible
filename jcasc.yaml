@@ -1,0 +1,16 @@
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - string:
+              scope: GLOBAL
+              id: "sonar-token"
+              secret: "SONAR_TOKEN"
+              description: "sonar-token"
+unclassified:
+  sonarGlobalConfiguration:
+    buildWrapperEnabled: true
+    installations:
+    - credentialsId: "sonar-token"
+      name: "sonar"
+      serverUrl: "http://sonarqube:9000"
